@@ -4,7 +4,7 @@ import QuestionAndAnswer from "./QuestionAndAnswer.component";
 
 const Quiz = () => {
   const [quiz, setQuiz] = useState([]);
-  const [answers, setAnswers] = useState({});
+  // const [answers, setAnswers] = useState({});
 
   const getQuiz = async () => {
     const res = await quizApi.get("/quiz");
