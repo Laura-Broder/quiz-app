@@ -5,8 +5,16 @@ const QuestionAndAnswer = ({ qAndA, index, onChange }) => {
     return answers.map((answer, answerIndex) => {
       return (
         <div key={answerIndex}>
-          <input type="radio" name={`a${index}`} value={answer} />
-          <label htmlFor={`a${answerIndex + 1}`} value={answer}>
+          <input
+            type="radio"
+            name={`q${index}`}
+            value={answer}
+            id={`a${answerIndex + 1}`}
+            onChange={(e) => {
+              onChange({ qNum: e.target.name, aNum: e.target.id });
+            }}
+          />
+          <label htmlFor={`a${answerIndex + 1}`} value={`a${answerIndex + 1}`}>
             {answer}
           </label>
         </div>

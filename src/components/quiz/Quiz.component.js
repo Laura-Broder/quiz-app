@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import quizApi from "../api/quizApi";
+import quizApi from "../../api/quizApi";
 import QuestionAndAnswer from "./QuestionAndAnswer.component";
 
-const Quiz = () => {
+const Quiz = ({ user }) => {
   const [quiz, setQuiz] = useState([]);
   // const [answers, setAnswers] = useState({});
 
