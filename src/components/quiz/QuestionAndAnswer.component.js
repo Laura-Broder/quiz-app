@@ -8,13 +8,12 @@ const QuestionAndAnswer = ({ qAndA, index, onChange }) => {
           <input
             type="radio"
             name={`q${index}`}
-            value={answer}
-            id={`a${answerIndex + 1}`}
+            value={answerIndex}
             onChange={(e) => {
-              onChange({ qNum: e.target.name, aNum: e.target.id });
+              onChange({ [e.target.name]: e.target.value });
             }}
           />
-          <label htmlFor={`a${answerIndex + 1}`} value={`a${answerIndex + 1}`}>
+          <label htmlFor={`a${answerIndex}`} value={`a${answerIndex}`}>
             {answer}
           </label>
         </div>
@@ -23,8 +22,8 @@ const QuestionAndAnswer = ({ qAndA, index, onChange }) => {
   };
   return (
     <div>
-      <p>{qAndA[`q${index + 1}`]}</p>
-      {renderQuestions(qAndA[`a${index + 1}`])}
+      <p>{qAndA[`q${index}`]}</p>
+      {renderQuestions(qAndA[`a${index}`])}
     </div>
   );
 };

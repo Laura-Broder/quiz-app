@@ -1,28 +1,51 @@
 import React, { useState } from "react";
-import { useHistory, BrowserRouter as Router, Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import quizApi from "../../api/quizApi";
 
-const SignIn = ({ onSubmit }) => {
+const SignIn = ({ onSubmit, mode, user }) => {
   const history = useHistory();
   const [username, setUsername] = useState("");
+  const [answerUsername, setAnswerUsername] = useState("");
   const [msg, setMsg] = useState();
 
   const createUser = async () => {
-    const res = await quizApi.post(`/quiz/${username}/create`);
+    let res = {};
+    if (mode === "user") {
+      res = await quizApi.post(`/quiz/${username}/create`);
+    } else {
+      // setUsername(user.name);
+      res = await quizApi.post(
+        `/quiz/${user.name}/answer/${answerUsername}/create`,
+      );
+    }
     onSubmit(res.data);
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!username) {
-      return setMsg("Please Enter Your Name");
+
+    if (mode === "user") {
+      if (!username) {
+        return setMsg("Please Enter Your Name");
+      }
+      history.push(`/quiz/${username}`);
+    } else {
+      if (!answerUsername) {
+        return setMsg("Please Enter Your Name");
+      }
+      history.push(`/quiz/${user.name}/answer/${answerUsername}`);
     }
-    createUser(username);
-    history.push(`/quiz/${username}`);
+    createUser();
   };
   const handleChange = (e) => {
     const term = e.target.value;
-    setUsername(term);
+    if (mode === "user") {
+      console.log(term);
+      setUsername(term);
+    } else {
+      setAnswerUsername(term);
+    }
   };
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
