@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import quizApi from "../../api/quizApi";
 
-const MyAnswers = ({ user }) => {
+const MyAnswers = () => {
   const [userAnswers, setUserAnswers] = useState();
   const [quiz, setQuiz] = useState([]);
+  const { username } = useParams();
+  const basePath = window.location.origin;
 
   useEffect(() => {
     const getQuiz = async () => {
@@ -16,11 +18,11 @@ const MyAnswers = ({ user }) => {
 
   useEffect(() => {
     const getAnswers = async () => {
-      const res = await quizApi.get(`/quiz/${user.name}`);
+      const res = await quizApi.get(`/quiz/${username}`);
       setUserAnswers(res.data.quizAnswers);
     };
     getAnswers();
-  }, [user]);
+  }, [username]);
 
   const renderAnswers = () => {
     if (userAnswers) {
@@ -44,16 +46,20 @@ const MyAnswers = ({ user }) => {
   //   return (
   //     <div>
   //       <a
-  //         href={`/quiz/${user.name}/answer/sign-in`}>{`/quiz/${user.name}/answer/sign-in`}</a>
+  //         href={`/quiz/${username}/answer/sign-in`}>{`/quiz/${username}/answer/sign-in`}</a>
   //     </div>
   //   );
   // };
 
   return (
     <div>
+      <h3>Hi {username}</h3>
+      <h1>This Is What You Answered:</h1>
       {renderAnswers()}
-      <Link
-        to={`/quiz/${user.name}/answer/sign-in`}>{`/quiz/${user.name}/answer/sign-in`}</Link>
+      <Link to={`/quiz/${username}/new-answer/sign-in`}>
+        {/* {`${basePath}/quiz/${username}/new-answer/sign-in`} */}
+        Link
+      </Link>
 
       {/* {renderUrl()} */}
     </div>

@@ -1,48 +1,58 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import quizApi from "../../api/quizApi";
 
-const SignIn = ({ onSubmit, mode, user }) => {
+const SignIn = ({ mode }) => {
   const history = useHistory();
-  const [username, setUsername] = useState("");
-  const [answerUsername, setAnswerUsername] = useState("");
+  const { username } = useParams();
+  const [newUsername, setNewUsername] = useState("");
+  const [newAnswerUsername, setNewAnswerUsername] = useState("");
   const [msg, setMsg] = useState();
 
   const createUser = async () => {
-    let res = {};
     if (mode === "user") {
-      res = await quizApi.post(`/quiz/${username}/create`);
+      await quizApi.post(`/quiz/${newUsername}/create`);
     } else {
-      // setUsername(user.name);
-      res = await quizApi.post(
-        `/quiz/${user.name}/answer/${answerUsername}/create`,
+      await quizApi.post(
+        `/quiz/${username}/answer/${newAnswerUsername}/create`,
       );
     }
-    onSubmit(res.data);
   };
+  // const checkUser = async (name) => {
+  //   if (await quizApi.get(`/quiz/${name}`)) {
+  //     return true;
+  //   }
+  //   return false;
+  // };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (mode === "user") {
-      if (!username) {
+      if (!newUsername) {
         return setMsg("Please Enter Your Name");
       }
-      history.push(`/quiz/${username}`);
+      // const isNew = checkUser(newUsername);
+      // console.log(isNew);
+      history.push(`/quiz/${newUsername}`);
     } else {
-      if (!answerUsername) {
+      if (!newAnswerUsername) {
         return setMsg("Please Enter Your Name");
       }
-      history.push(`/quiz/${user.name}/answer/${answerUsername}`);
+      // const isNew = checkUser(newAnswerUsername);
+      // console.log(isNew);
+
+      history.push(`/quiz/${username}/answer/${newAnswerUsername}`);
     }
     createUser();
   };
+
   const handleChange = (e) => {
     const term = e.target.value;
     if (mode === "user") {
-      console.log(term);
-      setUsername(term);
+      setNewUsername(term);
     } else {
-      setAnswerUsername(term);
+      setNewAnswerUsername(term);
     }
   };
 
