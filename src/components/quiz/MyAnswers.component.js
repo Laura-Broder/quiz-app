@@ -42,26 +42,13 @@ const MyAnswers = () => {
       return renderedAnswers;
     }
   };
-  // const renderUrl = () => {
-  //   return (
-  //     <div>
-  //       <a
-  //         href={`/quiz/${username}/answer/sign-in`}>{`/quiz/${username}/answer/sign-in`}</a>
-  //     </div>
-  //   );
-  // };
 
   return (
     <div>
       <h3>Hi {username}</h3>
       <h1>This Is What You Answered:</h1>
       {renderAnswers()}
-      <Link to={`/quiz/${username}/new-answer/sign-in`}>
-        {/* {`${basePath}/quiz/${username}/new-answer/sign-in`} */}
-        Link
-      </Link>
-
-      {/* {renderUrl()} */}
+      <Link to={`/quiz/${username}/new-answer/sign-in`}>Link</Link>
     </div>
   );
 };

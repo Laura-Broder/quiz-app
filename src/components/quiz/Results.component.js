@@ -36,6 +36,7 @@ const Results = () => {
       <h3>Hi {username}</h3>
       <h1>Here are your friends results:</h1>
       {renderResults()}
+      <Link to={`/quiz/${username}/new-answer/sign-in`}>Link</Link>
     </div>
   );
 };
