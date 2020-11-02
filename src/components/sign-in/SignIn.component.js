@@ -1,60 +1,51 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import quizApi from "../../api/quizApi";
 
 const SignIn = ({ mode }) => {
   const history = useHistory();
-  const { username } = useParams();
-  const [newUsername, setNewUsername] = useState("");
-  const [newAnswerUsername, setNewAnswerUsername] = useState("");
+  const { username, userId } = useParams();
+
+  const [newName, setNewName] = useState("");
+
+  const [newUser, setNewUser] = useState("");
+
   const [msg, setMsg] = useState();
 
   const createUser = async () => {
+    let res = {};
     if (mode === "user") {
-      await quizApi.post(`/quiz/${newUsername}/create`);
+      res = await quizApi.post(`/quiz-api/${newName}/create`);
     } else {
-      await quizApi.post(
-        `/quiz/${username}/answer/${newAnswerUsername}/create`,
+      res = await quizApi.post(
+        `/quiz-api/${username}/answer/${newName}/create/${userId}`,
       );
     }
+    const data = res.data;
+    setNewUser(data);
   };
-  // const checkUser = async (name) => {
-  //   if (await quizApi.get(`/quiz/${name}`)) {
-  //     return true;
-  //   }
-  //   return false;
-  // };
+
+  const goToQuiz = () => {
+    if (newUser) {
+      if (mode === "user") {
+        history.push(`/quiz/${newUser.name}/${newUser._id}`);
+      } else {
+        history.push(
+          `/quiz/${username}/answer/${newName}/${userId}/${newUser._id}`,
+        );
+      }
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (mode === "user") {
-      if (!newUsername) {
-        return setMsg("Please Enter Your Name");
-      }
-      // const isNew = checkUser(newUsername);
-      // console.log(isNew);
-      history.push(`/quiz/${newUsername}`);
-    } else {
-      if (!newAnswerUsername) {
-        return setMsg("Please Enter Your Name");
-      }
-      // const isNew = checkUser(newAnswerUsername);
-      // console.log(isNew);
-
-      history.push(`/quiz/${username}/answer/${newAnswerUsername}`);
+    if (!newName) {
+      return setMsg("Please Enter Your Name");
     }
     createUser();
   };
 
-  const handleChange = (e) => {
-    const term = e.target.value;
-    if (mode === "user") {
-      setNewUsername(term);
-    } else {
-      setNewAnswerUsername(term);
-    }
-  };
+  useEffect(goToQuiz, [newUser]);
 
   return (
     <div>
@@ -64,7 +55,9 @@ const SignIn = ({ mode }) => {
           type="text"
           name="userName"
           id="userName"
-          onChange={handleChange}
+          onChange={(e) => {
+            setNewName(e.target.value.toLowerCase());
+          }}
         />
         <button type="submit">Start The Quiz</button>
       </form>

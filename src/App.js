@@ -17,35 +17,29 @@ function App() {
           exact
           path="/new-quiz/sign-in"
           children={<SignIn mode="user" />}></Route>
-
         <Route
           exact
-          path={`/quiz/:username`}
+          path={`/quiz/:username/:userId`}
           children={<Quiz mode="user" />}></Route>
-
         <Route
           exact
-          path={`/quiz/:username/my-answers`}
+          path={`/quiz/:username/my-answers/:userId`}
           children={<MyAnswers />}></Route>
-
         <Route
           exact
-          path={`/quiz/:username/new-answer/sign-in`}
+          path={`/quiz/:username/new-answer/sign-in/:userId`}
           children={<SignIn mode="friend" />}></Route>
-
         <Route
           exact
-          path={`/quiz/:username/answer/:answerUsername`}
+          path={`/quiz/:username/answer/:answerUsername/:userId/:friendId`}
           children={<Quiz mode="friend" />}></Route>
-
         <Route
           exact
-          path={`/quiz/:username/answer/:answerUsername/get-score`}
+          path={`/quiz/:username/answer/:answerUsername/get-score/:userId/:friendId`}
           children={<FriendSummery />}></Route>
-
         <Route
           exact
-          path={`/quiz/:username/results`}
+          path={`/quiz/:username/results/:userId`}
           children={<Results />}></Route>
       </Router>
     </div>

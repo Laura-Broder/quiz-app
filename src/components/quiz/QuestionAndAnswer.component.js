@@ -1,16 +1,16 @@
 import React from "react";
 
-const QuestionAndAnswer = ({ qAndA, index, onChange }) => {
-  const renderQuestions = (answers) => {
+const QuestionAndAnswer = ({ qAndA, onChange }) => {
+  const renderAnswers = (answers) => {
     return answers.map((answer, answerIndex) => {
       return (
         <div key={answerIndex}>
           <input
             type="radio"
-            name={`q${index}`}
+            name={`q${qAndA.qNum}`}
             value={answerIndex}
             onChange={(e) => {
-              onChange({ [e.target.name]: e.target.value });
+              onChange({ qNum: qAndA.qNum, aNum: e.target.value });
             }}
           />
           <label htmlFor={`a${answerIndex}`} value={`a${answerIndex}`}>
@@ -22,8 +22,8 @@ const QuestionAndAnswer = ({ qAndA, index, onChange }) => {
   };
   return (
     <div>
-      <p>{qAndA[`q${index}`]}</p>
-      {renderQuestions(qAndA[`a${index}`])}
+      <p>{qAndA.q}</p>
+      {renderAnswers(qAndA.a)}
     </div>
   );
 };

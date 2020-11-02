@@ -7,24 +7,15 @@ import QuestionAndAnswer from "./QuestionAndAnswer.component";
 const Quiz = ({ mode }) => {
   const history = useHistory();
   const [quiz, setQuiz] = useState([]);
-  const [answers, setAnswers] = useState({
-    q0: "0",
-    q1: "0",
-    q2: "0",
-    q3: "0",
-  });
-  const { username, answerUsername } = useParams();
+  const [answers, setAnswers] = useState([]);
+  const { username, userId, answerUsername, friendId } = useParams();
 
-  const getQuiz = async () => {
-    const res = await quizApi.get("/quiz");
-    setQuiz(res.data.quiz);
-    return res.data.quiz;
-  };
   const handleAnswerChange = (answer) => {
-    const qNum = Object.keys(answer);
-    const oldAnswers = answers;
-    oldAnswers[qNum] = answer[qNum];
-    setAnswers({ ...oldAnswers });
+    console.log(answer);
+    const newAnswers = [...answers];
+    newAnswers[answer.qNum] = answer;
+
+    setAnswers([...newAnswers]);
   };
   const saveAnswers = async () => {
     if (mode === "user") {
@@ -40,13 +31,13 @@ const Quiz = ({ mode }) => {
   };
 
   const renderQuiz = () => {
+    console.log(answers);
     if (quiz.length) {
       return quiz.map((qAndA, index) => {
         return (
           <QuestionAndAnswer
             qAndA={qAndA}
             key={index}
-            index={index}
             onChange={handleAnswerChange}
           />
         );
@@ -58,7 +49,7 @@ const Quiz = ({ mode }) => {
       return (
         <div>
           <h3>Hi {username}</h3>
-          <h1>How Well Do You Know Me Quiz</h1>
+          <h1>How Well Do They Know You Quiz</h1>
         </div>
       );
     } else {
@@ -70,7 +61,12 @@ const Quiz = ({ mode }) => {
       );
     }
   };
+
   useEffect(() => {
+    const getQuiz = async () => {
+      const res = await quizApi.get("/quiz-api/5f9c4a8c728fc14a0c0b239b");
+      setQuiz(res.data.quiz);
+    };
     getQuiz();
   }, []);
 
@@ -84,6 +80,7 @@ const Quiz = ({ mode }) => {
       {renderWelcomeMsg()}
 
       {renderQuiz()}
+
       <button type="submit">Submit</button>
     </form>
   );
